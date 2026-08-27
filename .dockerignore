@@ -1,0 +1,64 @@
+# .dockerignore - Optimize Docker build context
+# Exclude unnecessary files from build context
+
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.coverage
+*.egg-info
+dist
+build
+
+# Virtual environments
+venv
+env
+.env
+.env.*
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Data (will be in volume, not image)
+/data
+*.json
+*.db
+*.sqlite
+
+# Documentation
+README.md
+*.md
+
+# Railway
+railway.toml
+railway.json
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Test files
+test_*.py
+*_test.py
+
+# Cache
+.cache
+.pip_cache

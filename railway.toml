@@ -1,0 +1,34 @@
+# Railway configuration for X4G
+# Deploy as a service in existing project (passionate-benevolence)
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Restart on failure
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 10
+
+# REQUIRED: Mount persistent volume at /data
+# This ensures x4g_state.json survives redeploys
+requiredMountPath = "/data"
+
+# Health check endpoint
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+
+[variables]
+# X4G configuration
+# These will be overridden by Railway Dashboard variables
+ADMIN_PASSWORD = "CHANGE_ME"
+SECRET_KEY = "auto-generated-if-empty"
+DATA_DIR = "/data"
+TELEGRAM_BOT_TOKEN = ""
+TELEGRAM_ADMIN_IDS = ""
+# RAILWAY_PUBLIC_DOMAIN is auto-set by Railway when Public Domain is enabled
+RAILWAY_PUBLIC_DOMAIN = "localhost"
+
+# Python optimization
+PYTHONUNBUFFERED = "1"
+PYTHONDONTWRITEBYTECODE = "1"
