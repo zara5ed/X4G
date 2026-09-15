@@ -99,6 +99,25 @@
 
 اگرچه وضعیت سرویس (کانفیگ‌ها، آمار، گروه‌های ساب) روی دیسک ذخیره می‌شود، اما **بدون اتصال یک Volume دائمی به مسیر `DATA_DIR`**، این اطلاعات فقط داخل همان کانتینر فعلی باقی می‌مانند و با تعویض/بازسازی کانتینر روی Railway از بین می‌روند. حتماً طبق راهنمای بخش «ذخیره‌سازی دائمی» بالا، یک Volume متصل کنید.
 
+## 🖥️ اجرای محلی (بدون Docker)
+
+```bash
+./run-local.sh                 # اجرا روی پورت 8000 (اولین بار venv و وابستگی‌ها را می‌سازد)
+PORT=9000 ./run-local.sh       # روی پورت دلخواه
+ADMIN_PASSWORD='MyPass' ./run-local.sh
+```
+
+معادل دستی همین کار:
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+PORT=8000 DATA_DIR=./data ADMIN_PASSWORD='MyPass' .venv/bin/python main.py
+```
+
+سپس در مرورگر به `http://localhost:8000/login` بروید (پیش‌فرض رمز بدون متغیر محیطی: `X4GKING`) و از `/dashboard` کانفیگ بسازید. وضعیت در `DATA_DIR/x4g_state.json` ذخیره می‌شود، پس کانفیگ‌ها با ری‌استارت از بین نمی‌روند.
+
+> 🐞 نکته‌ی فنی: پیش از این اجرای `python main.py` (همان دستوری که `Dockerfile`/`CMD` استفاده می‌کند) با خطای `ImportError: cannot import name 'RELAY_BUF' … (circular import)` متوقف می‌شد، چون `relay_vless.py` ماژول `main` را ایمپورت می‌کند و در حالت اجرای مستقیم نام ماژول `__main__` است. این مورد در `main.py` با alias کردن `__main__` به `main` رفع شده است.
+
 ---
 
 X4G · پشتیبانی: [لینک گروه](https://t.me/x4g_group)

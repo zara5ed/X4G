@@ -3,6 +3,7 @@ import json
 import os
 import hashlib
 import secrets
+import sys
 import time
 import aiofiles
 from datetime import datetime, timedelta
@@ -22,6 +23,16 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger("X4G")
 
 IRAN_TZ = ZoneInfo("Asia/Tehran")
+
+# ── Circular-import guard (اجرای مستقیم: python main.py) ──────────────────────
+# ماژول‌های relay_vless / xhttp_siz10 / telegram_bot با «from main import ...»
+# از همین فایل ایمپورت می‌کنند. وقتی فایل با «python main.py» اجرا شود نام ماژول
+# __main__ است، پس پایتون یک نسخه‌ی دوم از main.py را با نام «main» ایمپورت می‌کند
+# و در همین نقطه ImportError (circular import) می‌دهد — دقیقاً همان دستوری که
+# Dockerfile/CMD روی Railway اجرا می‌کند. با alias کردن __main__ به نام main،
+# «from main import ...» همان ماژول در حال اجرا را می‌بیند و مشکل برطرف می‌شود.
+if __name__ == "__main__":
+    sys.modules.setdefault("main", sys.modules["__main__"])
 
 app = FastAPI(title="X4G", docs_url=None, redoc_url=None)
 

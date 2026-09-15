@@ -1,0 +1,6 @@
+# X4G local/scratch ignores
+.venv/
+data/
+*.log
+__pycache__/
+.env
