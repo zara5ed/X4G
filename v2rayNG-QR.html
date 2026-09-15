@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>X4G — کانفیگ‌های آماده‌ی v2rayNG</title>
+<style>
+  :root{--bg:#0b1020;--card:#151b30;--b:#26304d;--t:#e8ecf8;--muted:#93a0c0;--acc:#4f7cff;--ok:#22c55e}
+  *{box-sizing:border-box}
+  body{margin:0;padding:28px 16px 60px;background:linear-gradient(180deg,#0b1020,#0e1428);color:var(--t);
+       font-family:Tahoma,'Segoe UI',system-ui,sans-serif}
+  header{max-width:980px;margin:0 auto 26px;text-align:center}
+  h1{margin:0 0 12px;font-size:26px}
+  .host{display:inline-block;background:#0f1730;border:1px solid var(--b);border-radius:999px;padding:7px 14px;color:var(--muted);font-size:13px;direction:ltr}
+  .wrap{max-width:980px;margin:0 auto;display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+  .card{background:var(--card);border:1px solid var(--b);border-radius:20px;padding:20px;text-align:center}
+  .badge{display:inline-block;font-size:12px;background:#1d2748;border:1px solid var(--b);color:#c9d5ff;border-radius:999px;padding:4px 10px;margin-bottom:10px}
+  h2{margin:6px 0;font-size:17px}
+  .sub{color:var(--muted);font-size:12.5px;line-height:1.9;margin-bottom:14px}
+  .qr{width:100%;max-width:260px;background:#fff;border-radius:16px;padding:10px}
+  .lbl{font-size:12px;color:var(--muted);margin:14px 0 8px;line-height:1.8}
+  textarea{width:100%;background:#0f1730;color:#cfe0ff;border:1px solid var(--b);border-radius:12px;
+            padding:10px;font:11.5px/1.6 monospace;direction:ltr;resize:vertical}
+  .row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center}
+  button{flex:1 1 130px;cursor:pointer;background:var(--acc);color:#fff;border:0;border-radius:12px;padding:11px 12px;font-size:13px;font-family:inherit}
+  button:hover{filter:brightness(1.1)}
+  .meta{font-size:12px;color:var(--muted);margin-top:10px;word-break:break-all}
+  .meta a{color:#8fb0ff;text-decoration:none}
+  code{background:#0f1730;border:1px solid var(--b);border-radius:6px;padding:1px 6px;direction:ltr;display:inline-block}
+  .note{max-width:980px;margin:26px auto 0;background:#151b30;border:1px solid var(--b);border-radius:16px;padding:16px 20px;
+         color:var(--muted);font-size:13px;line-height:2}
+  .note b{color:var(--t)}
+  .warn{border-color:#5b3a1a;background:#241a10}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:22px;background:var(--ok);color:#04210f;
+          padding:10px 18px;border-radius:999px;font-size:13px;opacity:0;transition:.25s;pointer-events:none}
+  .toast.on{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <h1>🔗 کانفیگ‌های آماده‌ی v2rayNG</h1>
+  <div class="host">server: <b>8000-irkhgea8tiww6evaw5sre.e2b.app</b> &nbsp;|&nbsp; port <b>443</b> &nbsp;|&nbsp; TLS ✅</div>
+</header>
+<div class="wrap">
+  <section class="card">
+    <div class="badge">⭐ پیشنهادی</div>
+    <h2>کانفیگ اصلی (WebSocket)</h2>
+    <div class="sub">نامحدود • vless-ws • fp=chrome • alpn=http/1.1 • port=443</div>
+    <img class="qr" src="data:image/png;base64,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" alt="QR X4G-Main-WS">
+    <div class="lbl">لینک VLESS — دکمه‌ی کپی را بزنید و در v2rayNG گزینه‌ی Import config from Clipboard را انتخاب کنید (یا QR بالا را اسکن کنید)</div>
+    <textarea readonly rows="3" onclick="this.select()">vless://a531f433-15ef-2660-a9e5-a2ba2c51ecc6@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&amp;security=tls&amp;type=ws&amp;host=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;path=/ws/a531f433-15ef-2660-a9e5-a2ba2c51ecc6&amp;sni=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;fp=chrome&amp;alpn=http/1.1#X4G-X4G-Main-WS</textarea>
+    <div class="row">
+      <button onclick="cp(this)" data-t="vless://a531f433-15ef-2660-a9e5-a2ba2c51ecc6@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&amp;security=tls&amp;type=ws&amp;host=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;path=/ws/a531f433-15ef-2660-a9e5-a2ba2c51ecc6&amp;sni=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;fp=chrome&amp;alpn=http/1.1#X4G-X4G-Main-WS">📋 کپی لینک VLESS</button>
+      <button onclick="cp(this)" data-t="https://8000-irkhgea8tiww6evaw5sre.e2b.app/sub/a531f433-15ef-2660-a9e5-a2ba2c51ecc6">🔗 کپی لینک ساب</button>
+    </div>
+    <div class="meta">UUID: <code>a531f433-15ef-2660-a9e5-a2ba2c51ecc6</code></div>
+    <div class="meta">صفحه‌ی عمومی: <a href="https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/a531f433-15ef-2660-a9e5-a2ba2c51ecc6" target="_blank">https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/a531f433-15ef-2660-a9e5-a2ba2c51ecc6</a></div>
+  </section>
+  <section class="card">
+    <div class="badge">🔁 اگر WS وصل نشد</div>
+    <h2>کانفیگ XHTTP (جایگزین)</h2>
+    <div class="sub">نامحدود • xhttp mode=auto • fp=chrome • alpn=h2,http/1.1 • port=443</div>
+    <img class="qr" src="data:image/png;base64,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" alt="QR X4G-XHTTP">
+    <div class="lbl">لینک VLESS — دکمه‌ی کپی را بزنید و در v2rayNG گزینه‌ی Import config from Clipboard را انتخاب کنید (یا QR بالا را اسکن کنید)</div>
+    <textarea readonly rows="3" onclick="this.select()">vless://48a83ecd-0d8b-206d-488e-2a894cea4d6c@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&amp;security=tls&amp;type=xhttp&amp;mode=auto&amp;host=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;path=/xhttp-siz10/48a83ecd-0d8b-206d-488e-2a894cea4d6c&amp;sni=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;fp=chrome&amp;alpn=h2%2Chttp/1.1#X4G-X4G-XHTTP</textarea>
+    <div class="row">
+      <button onclick="cp(this)" data-t="vless://48a83ecd-0d8b-206d-488e-2a894cea4d6c@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&amp;security=tls&amp;type=xhttp&amp;mode=auto&amp;host=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;path=/xhttp-siz10/48a83ecd-0d8b-206d-488e-2a894cea4d6c&amp;sni=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;fp=chrome&amp;alpn=h2%2Chttp/1.1#X4G-X4G-XHTTP">📋 کپی لینک VLESS</button>
+      <button onclick="cp(this)" data-t="https://8000-irkhgea8tiww6evaw5sre.e2b.app/sub/48a83ecd-0d8b-206d-488e-2a894cea4d6c">🔗 کپی لینک ساب</button>
+    </div>
+    <div class="meta">UUID: <code>48a83ecd-0d8b-206d-488e-2a894cea4d6c</code></div>
+    <div class="meta">صفحه‌ی عمومی: <a href="https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/48a83ecd-0d8b-206d-488e-2a894cea4d6c" target="_blank">https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/48a83ecd-0d8b-206d-488e-2a894cea4d6c</a></div>
+  </section>
+  <section class="card">
+    <div class="badge">🧪 تست</div>
+    <h2>کانفیگ آزمایشی محدود</h2>
+    <div class="sub">۵GB • ۳۰ روز • ۲۰Mbps • ۲ آی‌پی • fp=firefox</div>
+    <img class="qr" src="data:image/png;base64,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" alt="QR X4G-5GB-30Days">
+    <div class="lbl">لینک VLESS — دکمه‌ی کپی را بزنید و در v2rayNG گزینه‌ی Import config from Clipboard را انتخاب کنید (یا QR بالا را اسکن کنید)</div>
+    <textarea readonly rows="3" onclick="this.select()">vless://1f720513-6f24-0d0f-0ebb-1fbbaa59d572@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&amp;security=tls&amp;type=ws&amp;host=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;path=/ws/1f720513-6f24-0d0f-0ebb-1fbbaa59d572&amp;sni=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;fp=firefox&amp;alpn=http/1.1#X4G-X4G-5GB-30Days</textarea>
+    <div class="row">
+      <button onclick="cp(this)" data-t="vless://1f720513-6f24-0d0f-0ebb-1fbbaa59d572@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&amp;security=tls&amp;type=ws&amp;host=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;path=/ws/1f720513-6f24-0d0f-0ebb-1fbbaa59d572&amp;sni=8000-irkhgea8tiww6evaw5sre.e2b.app&amp;fp=firefox&amp;alpn=http/1.1#X4G-X4G-5GB-30Days">📋 کپی لینک VLESS</button>
+      <button onclick="cp(this)" data-t="https://8000-irkhgea8tiww6evaw5sre.e2b.app/sub/1f720513-6f24-0d0f-0ebb-1fbbaa59d572">🔗 کپی لینک ساب</button>
+    </div>
+    <div class="meta">UUID: <code>1f720513-6f24-0d0f-0ebb-1fbbaa59d572</code></div>
+    <div class="meta">صفحه‌ی عمومی: <a href="https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/1f720513-6f24-0d0f-0ebb-1fbbaa59d572" target="_blank">https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/1f720513-6f24-0d0f-0ebb-1fbbaa59d572</a></div>
+  </section></div>
+<div class="note">
+  <b>📥 نحوه‌ی ایمپورت در v2rayNG:</b><br>
+  ۱) دکمه‌ی «کپی لینک VLESS» را بزنید → در v2rayNG از منوی سه‌نقطه گزینه‌ی <b>Import config from Clipboard</b>.<br>
+  ۲) یا صفحه را روی نمایشگر دیگری باز کنید و در v2rayNG گزینه‌ی <b>Scan QR code</b> را بزنید.<br>
+  ۳) در صفحه‌ی اصلی v2rayNG کانفیگ را انتخاب و دکمه‌ی اتصال (V) را بزنید.
+</div>
+<div class="note warn">
+  <b>⚠️ این دامنه موقتی است:</b> روی همین سشن Arena اجرا شده و با بسته شدن سشن از کار می‌افتد (و روی برخی شبکه‌ها هم
+  دامنه‌های <code>*.e2b.app</code> فیلتر/مسدود هستند). برای کانفیگ همیشگی، همین پروژه را روی Railway یا VPS خودتان
+  دیپلوی کنید؛ پنل دامنه را از هدر درخواست می‌خواند و لینک‌ها خودکار با دامنه‌ی خودتان ساخته می‌شوند.<br>
+  <b>🛠 اگر وصل نشد:</b> کانفیگ XHTTP را امتحان کنید، یا fingerprint را <code>firefox</code>/<code>randomized</code>
+  و alpn را <code>h2</code> بگذارید.
+</div>
+<div class="toast" id="toast">کپی شد ✅</div>
+<script>
+function cp(btn){
+  var t = btn.getAttribute('data-t');
+  var done = function(){var e=document.getElementById('toast'); e.classList.add('on'); setTimeout(function(){e.classList.remove('on')},1400);};
+  if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).then(done, function(){fallback(t,done)}); }
+  else { fallback(t, done); }
+}
+function fallback(text, done){
+  var ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta); done();
+}
+</script>
+</body>
+</html>

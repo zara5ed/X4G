@@ -392,11 +392,14 @@ def client_ip(request: Request) -> str:
 # ── Default link ──────────────────────────────────────────────────────────────
 
 # ── Basic endpoints ───────────────────────────────────────────────────────────
-@app.get("/")
+# نکته: HEAD هم پشتیبانی می‌شود چون پراکسی/لایه‌های health-check (از جمله پیش‌نمایش‌های
+# میزبانی و Railway) گاهی با درخواست HEAD وضعیت سرویس را چک می‌کنند و در حالت قبل
+# مسیرهای GET-only جواب 405 می‌دادند که می‌توانست سرویس را «خراب» نشان دهد.
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
     return {"service": "X4G", "version": "9.5", "status": "active", "channel": "https://t.me/X4GHUB"}
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 async def health():
     return {"status": "ok", "connections": len(connections), "uptime": uptime()}
 
@@ -870,13 +873,13 @@ async def public_sub_data(uuid_key: str, request: Request):
 # ── HTML Pages (login + dashboard) ───────────────────────────────────────────
 from pages import LOGIN_HTML, DASHBOARD_HTML
 
-@app.get("/login", response_class=HTMLResponse)
+@app.api_route("/login", methods=["GET", "HEAD"], response_class=HTMLResponse)
 async def login_page(request: Request):
     if await is_valid_session(request.cookies.get(SESSION_COOKIE)):
         return RedirectResponse(url="/dashboard")
     return HTMLResponse(content=LOGIN_HTML)
 
-@app.get("/dashboard", response_class=HTMLResponse)
+@app.api_route("/dashboard", methods=["GET", "HEAD"], response_class=HTMLResponse)
 async def dashboard(request: Request):
     if not await is_valid_session(request.cookies.get(SESSION_COOKIE)):
         return RedirectResponse(url="/login")
