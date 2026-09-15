@@ -1,0 +1,24 @@
+X4G — لینک کانفیگ‌ها
+============================================================
+دامنه: 8000-irkhgea8tiww6evaw5sre.e2b.app   |   پنل: https://8000-irkhgea8tiww6evaw5sre.e2b.app/dashboard   |   رمز: X4G!arena-2026
+
+توجه: این سرور موقت است و فقط تا زمان فعال بودن این سشن کار می‌کند.
+
+[1] X4G-Main-WS  (vless-ws (VLESS روی WebSocket) | fp=chrome | alpn=http/1.1)
+    حجم: نامحدود | سرعت: نامحدود | آی‌پی: نامحدود | انقضا: بدون انقضا
+    VLESS : vless://a531f433-15ef-2660-a9e5-a2ba2c51ecc6@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&security=tls&type=ws&host=8000-irkhgea8tiww6evaw5sre.e2b.app&path=/ws/a531f433-15ef-2660-a9e5-a2ba2c51ecc6&sni=8000-irkhgea8tiww6evaw5sre.e2b.app&fp=chrome&alpn=http/1.1#X4G-X4G-Main-WS
+    SUB   : https://8000-irkhgea8tiww6evaw5sre.e2b.app/sub/a531f433-15ef-2660-a9e5-a2ba2c51ecc6
+    PAGE  : https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/a531f433-15ef-2660-a9e5-a2ba2c51ecc6
+
+[2] X4G-XHTTP  (xhttp (mode=auto → packet-up/stream-up) | fp=chrome | alpn=h2,http/1.1)
+    حجم: نامحدود | سرعت: نامحدود | آی‌پی: نامحدود | انقضا: بدون انقضا
+    VLESS : vless://48a83ecd-0d8b-206d-488e-2a894cea4d6c@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&security=tls&type=xhttp&mode=auto&host=8000-irkhgea8tiww6evaw5sre.e2b.app&path=/xhttp-siz10/48a83ecd-0d8b-206d-488e-2a894cea4d6c&sni=8000-irkhgea8tiww6evaw5sre.e2b.app&fp=chrome&alpn=h2%2Chttp/1.1#X4G-X4G-XHTTP
+    SUB   : https://8000-irkhgea8tiww6evaw5sre.e2b.app/sub/48a83ecd-0d8b-206d-488e-2a894cea4d6c
+    PAGE  : https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/48a83ecd-0d8b-206d-488e-2a894cea4d6c
+
+[3] X4G-5GB-30Days  (vless-ws (VLESS روی WebSocket) | fp=firefox | alpn=http/1.1)
+    حجم: ۵ گیگابایت | سرعت: ۲۰ Mbps | آی‌پی: ۲ آی‌پی | انقضا: ۳۰ روز
+    VLESS : vless://1f720513-6f24-0d0f-0ebb-1fbbaa59d572@8000-irkhgea8tiww6evaw5sre.e2b.app:443?encryption=none&security=tls&type=ws&host=8000-irkhgea8tiww6evaw5sre.e2b.app&path=/ws/1f720513-6f24-0d0f-0ebb-1fbbaa59d572&sni=8000-irkhgea8tiww6evaw5sre.e2b.app&fp=firefox&alpn=http/1.1#X4G-X4G-5GB-30Days
+    SUB   : https://8000-irkhgea8tiww6evaw5sre.e2b.app/sub/1f720513-6f24-0d0f-0ebb-1fbbaa59d572
+    PAGE  : https://8000-irkhgea8tiww6evaw5sre.e2b.app/p/1f720513-6f24-0d0f-0ebb-1fbbaa59d572
+
