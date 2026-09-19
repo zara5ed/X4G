@@ -137,6 +137,13 @@ else
       --source=. --remote=origin --push
 fi
 
+# Topics make the repository discoverable and describe it at a glance.
+if [[ "$DRY_RUN" != true ]] && command -v gh >/dev/null 2>&1; then
+  run gh repo edit --add-topic ai-agent,railway,self-hosted,docker,telegram-bot,deployment-template 2>/dev/null \
+    && ok "topics added" \
+    || warn "could not set topics (harmless — set them in the repository settings)"
+fi
+
 # ── 5. Optional: open the repo ───────────────────────────────────────────────
 say ""
 if [[ "$DRY_RUN" == true ]]; then
