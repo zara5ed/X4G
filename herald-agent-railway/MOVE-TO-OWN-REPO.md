@@ -33,6 +33,18 @@ git remote add origin https://github.com/<you>/herald-agent-railway.git
 git push -u origin main
 ```
 
+## Deploying *before* the split (straight from the monorepo folder)
+
+Connect Railway to `X4G` and set **Service → Settings → Source → Root Directory**
+to `herald-agent-railway`. Railway then builds this project's Dockerfile and
+leaves the rest of the repository alone.
+
+⚠️ Do not point a Railway service at the repository root: the root Dockerfile
+belongs to the X4G gateway, which is a proxy-style workload — exactly the kind
+of service Railway's acceptable-use policy prohibits, and the reason accounts
+get suspended. Keep the two workloads on separate services (or separate
+projects) so one cannot take the other down with it.
+
 ## After the split
 
 1. Delete the `.git`-less copy here, or keep it as a monorepo folder — your choice.
