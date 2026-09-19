@@ -1,10 +1,27 @@
 # Splitting this folder into its own GitHub repository
 
 While this project lives inside the `X4G` repository, GitHub cannot create a new
-repository for it. Two ways to give it a repository of its own — both keep the
+repository for it. Three ways to give it a repository of its own — all keep the
 full commit history.
 
-## Option A · `git subtree split` (no extra tooling)
+## Option A · `publish.sh` (one command, easiest)
+
+From a copy of this folder on your own machine, where the GitHub CLI is
+authenticated as **you**:
+
+```bash
+./publish.sh                 # creates a public  github.com/<you>/herald-agent-railway
+./publish.sh my-agent        # custom repository name
+./publish.sh my-agent --private
+./publish.sh --dry-run       # run every check, print the commands, change nothing
+```
+
+The script verifies your tooling, refuses to publish anything that looks like a
+credential, initialises a repository if the folder is not one yet, and never
+force-pushes over an existing repository — if the repo already exists it just
+pushes to it.
+
+## Option B · `git subtree split` (no extra tooling)
 
 ```bash
 # from a fresh clone of X4G, on the branch that contains this folder
@@ -22,7 +39,7 @@ git push herald herald-main:main
 The new repository then contains only this project, with the commits that
 touched it.
 
-## Option B · restore from the bundle (byte-identical, includes the `main` branch)
+## Option C · restore from the bundle (byte-identical, includes the `main` branch)
 
 ```bash
 # herald-agent-railway.bundle was produced with: git bundle create … --all
@@ -57,6 +74,6 @@ projects) so one cannot take the other down with it.
 
 ## Note on history
 
-The bundle (Option B) is the authoritative copy: it has its own `main` branch
+The bundle (Option C) is the authoritative copy: it has its own `main` branch
 and squashed, project-scoped commits. Anything under `X4G/herald-agent-railway/`
 exists only so the code is reachable on GitHub in the meantime.

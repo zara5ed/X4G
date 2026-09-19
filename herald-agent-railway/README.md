@@ -45,6 +45,15 @@ bootstrap script and documentation here are written from scratch for this repo.
 
 ## Quick start
 
+### 0. Get the code
+
+```bash
+git clone <your-fork-url> herald-agent-railway && cd herald-agent-railway
+./publish.sh            # optional: create your own GitHub repo in one command
+```
+
+Already cloned or downloaded a copy? Skip straight to step 1.
+
 ### 1. Create the service
 
 - **Dashboard** — New Project → Deploy from GitHub repo → pick your fork of this repo.
@@ -205,12 +214,14 @@ if a bot of yours gets flagged — is in [docs/COMPLIANCE.md](docs/COMPLIANCE.md
 
 ```
 Dockerfile              thin overlay on the upstream runtime image
-railway.toml            deploy config (legacy format — see the header note)
-.railway/               Railway Infrastructure-as-Code (the current format)
+.railway/               Railway Infrastructure-as-Code (the current format;
+                        railway.toml is deprecated — see .railway/README.md)
 scripts/bootstrap.sh    validation, persona seed, graceful shutdown
 app/health_server.py    /healthz + /readyz, standard library only
 assets/soul.md          default persona template
+publish.sh              one command to create your own GitHub repo and push
 docs/                   deploy, compliance, troubleshooting, security
+MOVE-TO-OWN-REPO.md     how this folder becomes a standalone repository
 ```
 
 ---
