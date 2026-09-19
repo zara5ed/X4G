@@ -39,15 +39,29 @@ git push herald herald-main:main
 The new repository then contains only this project, with the commits that
 touched it.
 
-## Option C · restore from the bundle (byte-identical, includes the `main` branch)
+## Option C · restore from the bundle (keeps this project's own history)
+
+This is the only option that preserves the project's *own* commits (Option B
+keeps the monorepo's commit messages instead). The bundle is a single
+self-contained file — every branch, no working tree needed:
 
 ```bash
-# herald-agent-railway.bundle was produced with: git bundle create … --all
+# download it (it sits next to this folder, in the X4G repository root)
+curl -LO https://github.com/<you>/X4G/raw/arena/01a0a682-x4g/herald-agent-railway.bundle
+
 git clone herald-agent-railway.bundle herald-agent-railway
 cd herald-agent-railway
 git remote remove origin 2>/dev/null || true
 git remote add origin https://github.com/<you>/herald-agent-railway.git
 git push -u origin main
+```
+
+The bundle is a **snapshot**, not a source of truth. If the code changes, it is
+regenerated from the project repository with:
+
+```bash
+git bundle create herald-agent-railway.bundle --all
+git bundle verify herald-agent-railway.bundle   # always sanity-check it
 ```
 
 ## Deploying *before* the split (straight from the monorepo folder)
@@ -74,6 +88,7 @@ projects) so one cannot take the other down with it.
 
 ## Note on history
 
-The bundle (Option C) is the authoritative copy: it has its own `main` branch
-and squashed, project-scoped commits. Anything under `X4G/herald-agent-railway/`
-exists only so the code is reachable on GitHub in the meantime.
+The project's real history lives in its own repository — the bundle in Option C
+carries all of it, on a `main` branch with project-scoped (not monorepo)
+commits. Everything under `X4G/herald-agent-railway/` is a mirror so the code is
+reachable on GitHub in the meantime.
