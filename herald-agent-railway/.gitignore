@@ -1,0 +1,29 @@
+# Secrets and local state
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Local runs
+data/
+.tmpdata/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Node / Railway IaC tooling
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lockb
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store

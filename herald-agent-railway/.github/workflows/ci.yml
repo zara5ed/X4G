@@ -1,0 +1,117 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: lint (shell, python, files)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Shell syntax
+        run: bash -n scripts/bootstrap.sh
+
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: ./scripts
+
+      - name: Python syntax
+        run: python3 -m py_compile app/health_server.py
+
+      - name: Dockerfile parses
+        run: |
+          python3 - <<'PY'
+          import re, sys
+          text = open("Dockerfile", encoding="utf-8").read()
+          assert text.startswith("# syntax=docker/dockerfile:1"), "missing syntax directive"
+          assert "ENTRYPOINT" not in text.split("\n# ")[0], "ENTRYPOINT must not be overridden"
+          assert re.search(r'^CMD \["bash", "/opt/herald/bootstrap\.sh"\]', text, re.M), "unexpected CMD"
+          print("Dockerfile checks passed")
+          PY
+
+      - name: Shell scripts use LF endings
+        run: |
+          if grep -rlU $'\r' scripts/ Dockerfile 2>/dev/null; then
+            echo "::error::CRLF line endings found — the container entrypoint will fail"
+            exit 1
+          fi
+          echo "line endings OK"
+
+      - name: No secrets committed
+        run: |
+          # Guard against a real key sneaking into the reference file.
+          if grep -nE '(sk-[A-Za-z0-9]{20,}|[0-9]{9,}:AA[A-Za-z0-9_-]{30,})' .env.example .railway/railway.ts docs/*.md; then
+            echo "::error::a credential-looking value is committed"
+            exit 1
+          fi
+          echo "no credentials found"
+
+  smoke:
+    name: smoke (health endpoint)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start the health endpoint and probe it
+        run: |
+          set -euo pipefail
+          HERALD_HEALTH_PORT=8087 python3 app/health_server.py &
+          server=$!
+          trap 'kill $server 2>/dev/null || true' EXIT
+
+          for _ in $(seq 1 20); do
+            curl -fsS http://127.0.0.1:8087/healthz >/dev/null 2>&1 && break
+            sleep 0.5
+          done
+
+          echo "--- /healthz"; curl -fsS http://127.0.0.1:8087/healthz
+          echo "--- /readyz (no readiness file yet → 503 expected)"
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8087/readyz)
+          [ "$code" = "503" ] || { echo "expected 503, got $code"; exit 1; }
+
+          echo '{"ready":true,"agent":"Herald","version":"1.0.0","provider":"openrouter","platforms":["telegram"]}' \
+            > /tmp/herald-ready.json
+          echo "--- /readyz (ready)"; curl -fsS http://127.0.0.1:8087/readyz
+
+          echo "--- / unknown route must 404"
+          code=$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8087/admin)
+          [ "$code" = "404" ] || { echo "expected 404, got $code"; exit 1; }
+          echo "smoke test passed"
+
+  image:
+    name: build container image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: herald-agent:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Verify the overlay landed in the image
+        run: |
+          docker run --rm --entrypoint bash herald-agent:ci -lc '
+            set -e
+            test -x /opt/herald/bootstrap.sh
+            test -f /opt/herald/health_server.py
+            test -f /opt/herald/soul.md
+            command -v hermes >/dev/null || test -x /opt/hermes/.venv/bin/hermes
+            echo "overlay verified"
+          '

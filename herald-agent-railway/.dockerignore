@@ -1,0 +1,17 @@
+# Keep the build context tiny — the base image carries the runtime.
+.git
+.gitignore
+.github
+.railway
+.env
+.env.*
+!.env.example
+docs
+*.md
+!assets/soul.md
+docker-compose.yml
+Makefile
+node_modules
+**/__pycache__
+**/*.pyc
+*.log

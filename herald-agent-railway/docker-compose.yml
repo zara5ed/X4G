@@ -1,0 +1,40 @@
+# Local smoke test for the Herald image.
+#
+#   cp .env.example .env      # then fill in a provider key + bot token
+#   docker compose up --build
+#   curl -s localhost:8080/readyz
+#
+# This mirrors the Railway topology: one service, one volume at /opt/data.
+services:
+  herald:
+    build:
+      context: .
+      args:
+        # Pin a release for reproducibility, e.g. v2026.9.7
+        HERMES_IMAGE: ${HERMES_IMAGE:-nousresearch/hermes-agent:latest}
+    image: herald-agent:local
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      HOME: /opt/data
+      HERMES_HOME: /opt/data/.hermes
+      HERALD_AGENT_NAME: ${HERALD_AGENT_NAME:-Herald}
+      HERALD_HEALTH_PORT: "8080"
+    ports:
+      # Only published locally for the health check; nothing else listens.
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - herald-state:/opt/data
+    # Railway sends SIGTERM on redeploy; the bootstrap forwards it so the
+    # gateway can close cleanly and the volume stays consistent.
+    stop_grace_period: 30s
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+volumes:
+  herald-state:

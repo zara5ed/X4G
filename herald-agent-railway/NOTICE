@@ -1,0 +1,60 @@
+Herald — third-party notices
+============================
+
+Herald is a deployment wrapper. The agent runtime it installs and runs is a
+separate, independently maintained open-source project. This file records that
+relationship and carries the upstream license text, as the MIT license requires.
+
+--------------------------------------------------------------------------------
+1. Hermes Agent — the runtime
+--------------------------------------------------------------------------------
+
+  Project : Hermes Agent
+  Owner   : Nous Research
+  Source  : https://github.com/NousResearch/hermes-agent
+  License : MIT
+  Use     : pulled as the container base image at build time
+            (default: nousresearch/hermes-agent, pinned via the HERMES_IMAGE
+            build argument)
+
+Herald does not modify, fork or vendor the upstream source tree. The upstream
+project is where the agent logic lives; bugs in agent behaviour belong in its
+issue tracker, not here.
+
+--------------------------------------------------------------------------------
+2. MIT License (upstream — Nous Research)
+--------------------------------------------------------------------------------
+
+MIT License
+
+Copyright (c) Nous Research
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+--------------------------------------------------------------------------------
+3. Naming
+--------------------------------------------------------------------------------
+
+"Herald" is the name of this deployment wrapper — the Dockerfile, bootstrap
+script, health endpoint, documentation and default persona authored for this
+repository. It is not a rename of the upstream project, and no endorsement by
+Nous Research or Railway is implied.
+
+If you redistribute or rebrand this wrapper, keep this file and the upstream
+license text with it.
