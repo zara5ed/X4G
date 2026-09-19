@@ -1,0 +1,13 @@
+# Shell scripts must stay LF — a CRLF checkout breaks the container entrypoint
+# with a confusing "no such file or directory" error.
+*.sh            text eol=lf
+Dockerfile      text eol=lf
+*.yml           text eol=lf
+*.yaml          text eol=lf
+*.md            text eol=lf
+*.ts            text eol=lf
+
+# Binary assets
+*.png           binary
+*.jpg           binary
+*.svg           text eol=lf

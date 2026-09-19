@@ -3,6 +3,7 @@ import json
 import os
 import hashlib
 import secrets
+import sys
 import time
 import aiofiles
 from datetime import datetime, timedelta
@@ -22,6 +23,16 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger("X4G")
 
 IRAN_TZ = ZoneInfo("Asia/Tehran")
+
+# ── Circular-import guard (اجرای مستقیم: python main.py) ──────────────────────
+# ماژول‌های relay_vless / xhttp_siz10 / telegram_bot با «from main import ...»
+# از همین فایل ایمپورت می‌کنند. وقتی فایل با «python main.py» اجرا شود نام ماژول
+# __main__ است، پس پایتون یک نسخه‌ی دوم از main.py را با نام «main» ایمپورت می‌کند
+# و در همین نقطه ImportError (circular import) می‌دهد — دقیقاً همان دستوری که
+# Dockerfile/CMD روی Railway اجرا می‌کند. با alias کردن __main__ به نام main،
+# «from main import ...» همان ماژول در حال اجرا را می‌بیند و مشکل برطرف می‌شود.
+if __name__ == "__main__":
+    sys.modules.setdefault("main", sys.modules["__main__"])
 
 app = FastAPI(title="X4G", docs_url=None, redoc_url=None)
 
@@ -381,11 +392,14 @@ def client_ip(request: Request) -> str:
 # ── Default link ──────────────────────────────────────────────────────────────
 
 # ── Basic endpoints ───────────────────────────────────────────────────────────
-@app.get("/")
+# نکته: HEAD هم پشتیبانی می‌شود چون پراکسی/لایه‌های health-check (از جمله پیش‌نمایش‌های
+# میزبانی و Railway) گاهی با درخواست HEAD وضعیت سرویس را چک می‌کنند و در حالت قبل
+# مسیرهای GET-only جواب 405 می‌دادند که می‌توانست سرویس را «خراب» نشان دهد.
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
     return {"service": "X4G", "version": "9.5", "status": "active", "channel": "https://t.me/X4GHUB"}
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 async def health():
     return {"status": "ok", "connections": len(connections), "uptime": uptime()}
 
@@ -859,13 +873,13 @@ async def public_sub_data(uuid_key: str, request: Request):
 # ── HTML Pages (login + dashboard) ───────────────────────────────────────────
 from pages import LOGIN_HTML, DASHBOARD_HTML
 
-@app.get("/login", response_class=HTMLResponse)
+@app.api_route("/login", methods=["GET", "HEAD"], response_class=HTMLResponse)
 async def login_page(request: Request):
     if await is_valid_session(request.cookies.get(SESSION_COOKIE)):
         return RedirectResponse(url="/dashboard")
     return HTMLResponse(content=LOGIN_HTML)
 
-@app.get("/dashboard", response_class=HTMLResponse)
+@app.api_route("/dashboard", methods=["GET", "HEAD"], response_class=HTMLResponse)
 async def dashboard(request: Request):
     if not await is_valid_session(request.cookies.get(SESSION_COOKIE)):
         return RedirectResponse(url="/login")
