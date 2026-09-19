@@ -10,15 +10,16 @@ services:
     build:
       context: .
       args:
-        # Pin a release for reproducibility, e.g. v2026.9.7
+        # Pin a release for reproducibility, e.g. v2026.9.14
         HERMES_IMAGE: ${HERMES_IMAGE:-nousresearch/hermes-agent:latest}
     image: herald-agent:local
     restart: unless-stopped
     env_file:
       - .env
     environment:
-      HOME: /opt/data
-      HERMES_HOME: /opt/data/.hermes
+      # Upstream already defaults HERMES_HOME to /opt/data; only set it if you
+      # deliberately want a different layout.
+      HERMES_HOME: /opt/data
       HERALD_AGENT_NAME: ${HERALD_AGENT_NAME:-Herald}
       HERALD_HEALTH_PORT: "8080"
     ports:

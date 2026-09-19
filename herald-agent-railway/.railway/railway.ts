@@ -31,9 +31,14 @@ export default defineRailway(() => {
     },
 
     env: {
-      HOME: "/opt/data",
-      HERMES_HOME: "/opt/data/.hermes",
+      // HERMES_HOME and HOME are deliberately NOT overridden. The upstream
+      // image already sets HERMES_HOME=/opt/data (the volume root) and mounts
+      // it as VOLUME ["/opt/data"]; redefining it would put the agent's state
+      // in a subdirectory that no upstream tooling or tutorial expects.
       HERALD_AGENT_NAME: "Herald",
+
+      // Set HOME=/opt/data yourself if you want CLI caches (~/.config, npm,
+      // .local/bin) to survive redeploys — upstream leaves HOME alone.
       PYTHONUNBUFFERED: "1",
       PYTHONDONTWRITEBYTECODE: "1",
 

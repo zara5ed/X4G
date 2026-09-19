@@ -105,12 +105,12 @@ A good boot looks like:
   └────────────────────────────────────────────────────────────┘
 
 [herald] agent runtime : /opt/hermes/.venv/bin/hermes (…)
-[herald] state dir     : /opt/data/.hermes
+[herald] state dir     : /opt/data
 [herald] volume        : writable
 [herald] provider      : OPENROUTER_API_KEY
 [herald] channels      : telegram
 [herald] api server    : disabled (no public API surface)
-[herald] persona       : seeded /opt/data/.hermes/SOUL.md as "Herald"
+[herald] persona       : seeded /opt/data/SOUL.md as "Herald"
 [herald] health        : listening on 0.0.0.0:8080  (/healthz)
 [herald] starting      : hermes gateway run
 ```
@@ -133,7 +133,7 @@ Only do this if you actually need the OpenAI-compatible endpoint.
    ```
 
    If you skip `API_SERVER_KEY`, Herald generates one and writes it to
-   `/opt/data/.hermes/.api_server_key` — check the logs for the file path. It
+   `/opt/data/.api_server_key` — check the logs for the file path. It
    will **never** publish an unauthenticated endpoint.
 
 2. Add a domain (Service → Networking → Generate domain) and set the target
@@ -147,7 +147,10 @@ Only do this if you actually need the OpenAI-compatible endpoint.
 ## 6. Pinning and upgrading the runtime
 
 ```bash
-railway variables --set HERMES_IMAGE=nousresearch/hermes-agent:v2026.9.7
+# Pin the runtime for reproducible deploys. Check the tag exists first:
+#   docker manifest inspect nousresearch/hermes-agent:v2026.9.14   (or the Tags tab on Docker Hub)
+# Tags follow the upstream release tags, e.g. v2026.9.14 / v2026.9.7.
+railway variables --set HERMES_IMAGE=nousresearch/hermes-agent:v2026.9.14
 ```
 
 The build argument defaults to `:latest`. Pin it for reproducible deploys, and
@@ -183,3 +186,21 @@ If you want a one-click "Deploy on Railway" button for other people:
   loops on tool calls is a provider-billing event, not a Railway one.
 - Optional: cap the agent's tool loop with `HERMES_MAX_ITERATIONS` to bound
   worst-case token spend per turn.
+
+
+---
+
+## Appendix · What the upstream image already does
+
+Read from the upstream `Dockerfile` (via the GitHub API, September 2026) so you
+do not have to reverse-engineer it:
+
+| Upstream fact | Consequence for this template |
+|---|---|
+| `ENV HERMES_HOME=/opt/data` | The state root **is** the volume root. Redefining `HERMES_HOME` would move config, sessions and skills into a subdirectory that no upstream tooling expects — so Herald never overrides it. |
+| `VOLUME ["/opt/data"]` | Railway's volume must be mounted at `/opt/data`; that is the path `requiredMountPath` protects. |
+| `ENTRYPOINT ["/opt/hermes/docker/entrypoint-dispatch.sh"]` | Under a normal PID 1 it execs s6-overlay `/init`, which runs the first-boot hook as root, fixes volume ownership, then drops to the unprivileged `hermes` user. When a platform wraps the entrypoint under its own init, the dispatcher skips s6 and runs the bootstrap directly — either way the agent starts. |
+| The dispatcher treats a first argument that is an executable on PATH as a command | That is why `CMD ["bash", "/opt/herald/bootstrap.sh"]` works and needs no `hermes` subcommand wrapper. |
+| `ENV HERMES_WRITE_SAFE_ROOT=/opt/data` | Writes are expected under the volume; tool artefacts landing elsewhere may be rejected by the runtime. |
+| No `ENV HOME` | `HOME` stays the image user's home, so CLI caches are *not* persisted. Set `HOME=/opt/data` yourself if you want them on the volume. |
+| Image includes a Node/Playwright toolchain and the `hermes` CLI | Nothing has to be installed at deploy time; this template only adds the bootstrap, health endpoint and persona. |

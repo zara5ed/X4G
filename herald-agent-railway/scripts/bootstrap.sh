@@ -52,6 +52,9 @@ if [[ -z "${PYTHON_BIN}" && -x /opt/hermes/.venv/bin/python ]]; then
 fi
 
 # ── Data directory (Railway volume) ───────────────────────────────────────────
+# The official image sets HERMES_HOME=/opt/data (its volume root). We only fall
+# back to ${HOME}/.hermes when the script runs outside that image, e.g. a local
+# HERALD_DRY_RUN=1 check — never overriding the image's own default.
 export HOME="${HOME:-/opt/data}"
 export HERMES_HOME="${HERMES_HOME:-${HOME}/.hermes}"
 mkdir -p "${HERMES_HOME}" 2>/dev/null || true

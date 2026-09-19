@@ -32,13 +32,13 @@ those three sentences.
 - The bootstrap **never prints secret values** — only the names of the variables
   it found. Keep it that way if you extend the script.
 - If you enable the API server without a key, Herald generates a 256-bit key and
-  stores it with `0600` permissions at `/opt/data/.hermes/.api_server_key`.
+  stores it with `0600` permissions at `/opt/data/.api_server_key`.
   Copy it to a variable and delete the file if you prefer key management in one
   place.
 - `railway ssh` gives a shell inside the container. Treat that access like root
   on a server: it can read every variable, including provider keys.
 - Volumes are the agent's memory. Snapshot anything important outside Railway
-  (the text files under `/opt/data/.hermes` are small enough to keep in a
+  (the text files under `/opt/data` are small enough to keep in a
   private repo or a bucket).
 - Rotate `TELEGRAM_BOT_TOKEN` / provider keys if they ever appear in a log,
   screenshot, or issue.

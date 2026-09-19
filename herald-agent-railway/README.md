@@ -182,7 +182,8 @@ railway ssh                     # shell into the running container (if enabled)
 **Pin the runtime for reproducible deploys:**
 
 ```bash
-railway variables --set HERMES_IMAGE=nousresearch/hermes-agent:v2026.9.7
+# Check the tag exists first (Tags tab on Docker Hub), then pin it:
+railway variables --set HERMES_IMAGE=nousresearch/hermes-agent:v2026.9.14
 ```
 
 **Upgrade:** bump `HERMES_IMAGE`, redeploy, then revert the pin once you are

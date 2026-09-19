@@ -88,7 +88,7 @@ the first-boot hook needs to run to fix volume ownership.
 - `API_SERVER_ENABLED=1` requires `API_SERVER_HOST=0.0.0.0` for Railway to reach
   it; Herald forces this and warns if you set anything else.
 - Every request needs `Authorization: Bearer $API_SERVER_KEY`. If you did not
-  set a key, read it from `/opt/data/.hermes/.api_server_key`.
+  set a key, read it from `/opt/data/.api_server_key`.
 - No domain attached means the API is not reachable from the internet. Add one
   and set the target port to match.
 
@@ -119,7 +119,7 @@ To reset the agent to a blank slate without touching your deployment:
 
 ```bash
 railway ssh                     # if SSH is enabled on the service
-rm -rf /opt/data/.hermes        # ⚠ deletes memory, sessions, skills and credentials
+find /opt/data -mindepth 1 -delete   # ⚠ empties the state volume (memory, sessions, credentials)
 ```
 
 Then redeploy: the bootstrap recreates the directory and re-seeds the persona.
